@@ -1,24 +1,14 @@
 #!/bin/sh
-# Evento: início da sessão.
-# Coloca no contexto do agente o estado atual do projeto e a fronteira de tickets.
+# Evento: início da sessão. Coloca o estado atual do projeto no contexto do agente.
 
-. "$(dirname "$0")/lib.sh"
-
-root=$(project_root)
-status="$root/docs/progress/STATUS.md"
-tasks="$root/tasks/README.md"
+root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+status="$root/docs/STATUS.md"
 
 if [ -f "$status" ]; then
-  echo "=== Estado atual do projeto (docs/progress/STATUS.md) ==="
-  sed -n '1,80p' "$status"
-fi
-
-if [ -f "$tasks" ]; then
+  echo "=== docs/STATUS.md ==="
+  sed -n '1,60p' "$status"
   echo
-  echo "=== Fronteira de tickets (tasks/README.md) ==="
-  sed -n '/^## Fronteira atual/,/^## /p' "$tasks" | sed '$d'
 fi
 
-echo
-echo "Lembrete: classifique o pedido na seção 3 do AGENTS.md e siga a skill indicada até o Fechamento."
+echo "Lembrete: defina o nível (Rápido/Padrão/Grande) e o tipo do pedido — AGENTS.md §3 e §4."
 exit 0

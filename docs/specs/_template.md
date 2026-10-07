@@ -1,44 +1,35 @@
-# Spec NN — {{Nome da etapa}}
+# Spec NN — {{Nome}}
 
-**Status:** rascunho | ready-for-agent | em execução | entregue
-**Ordem:** NN/total
-**Stories:** US-XX, US-YY
-**Requisitos:** RF-XX, RNF-YY
-**ADRs:** <!-- links -->
+**Status:** rascunho | aprovada | em execução | entregue
+**Requisitos:** RF-NN, US-NN · **Decisões:** D-NNN
 
 ## Problema
 
-<!-- Por que esta etapa existe. O que falta hoje e qual o custo disso. -->
+<!-- Por que este trabalho existe. -->
 
 ## Solução
 
-<!-- O que estará funcionando ao fim desta etapa, do ponto de vista do comportamento. -->
-
-## Histórias cobertas
-
-1. Como {{papel}}, quero {{ação}}, para {{benefício}}.
+<!-- O que estará funcionando ao final, do ponto de vista do comportamento. -->
 
 ## Decisões de implementação
 
-<!--
-Concretas e verificáveis: módulos afetados, contratos (entradas/saídas), regras de validação,
-regras transacionais, tratamento de erros, permissões. Referencie conventions.md em vez de repetir.
--->
+<!-- Concretas: módulos afetados, contratos, validações, transações, erros, permissões. Aponte para architecture.md e conventions.md em vez de repetir. -->
 
--
+## Testes obrigatórios
 
-## Decisões de teste
+<!-- Onde os testes se conectam ao sistema e os casos que cobrem os critérios de aceite. -->
 
-- **Seam:** <!-- onde os testes se conectam -->
-- **Bom teste aqui é:** <!-- comportamento observável esperado -->
-- **Casos obrigatórios:**
-  - [ ]
-  - [ ]
+- [ ] 
+
+## Fatias
+
+Cada fatia é vertical, entrega algo demonstrável e cabe em uma sessão. Marque ao concluir.
+
+- [ ] **1. {{nome}}** — {{o que entrega}}. Aceite: {{critérios testáveis}}
+- [ ] **2. {{nome}}** — {{o que entrega}}. Depende de: 1. Aceite: {{critérios}}
 
 ## Fora de escopo
 
-<!-- O que fica para outras specs, com o número delas quando souber. -->
+## Questões em aberto
 
-## Riscos e questões em aberto
-
-<!-- Deve estar vazio quando o status for ready-for-agent. -->
+<!-- Deve estar vazio quando o status for "aprovada". -->

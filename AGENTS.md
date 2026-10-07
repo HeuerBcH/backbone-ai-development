@@ -1,105 +1,96 @@
 # AGENTS.md
 
-> Porta de entrada para qualquer agente de IA que trabalhe neste repositório.
-> Leia este arquivo inteiro antes de agir. Ele é curto de propósito: aponta para onde está cada coisa.
+> Porta de entrada para qualquer agente de IA neste repositório. Leia inteiro antes de agir.
 
 ## 1. Projeto
 
 **Nome:** {{NOME_DO_PROJETO}}
 **Objetivo em uma frase:** {{O_QUE_O_PROJETO_RESOLVE_E_PARA_QUEM}}
 **Idioma da documentação:** Português do Brasil
-**Idioma do código (identificadores, commits):** {{IDIOMA}}
+**Idioma do código (identificadores, mensagens de commit):** {{IDIOMA}}
 
-## 2. Antes de começar qualquer tarefa
+## 2. Antes de agir
 
-1. Leia [`docs/progress/STATUS.md`](docs/progress/STATUS.md) — estado atual, o que está em andamento e o que vem a seguir.
-2. Leia [`docs/progress/lessons-learned.md`](docs/progress/lessons-learned.md) — erros que não devem se repetir.
-3. **Classifique o pedido** na tabela da seção 3 e siga o roteiro indicado.
-4. Leia as rules em [`.agents/rules/`](.agents/rules/) que se aplicam ao que você vai tocar (`00-core.md` sempre).
-5. Se for trabalhar dentro de uma pasta que tem um `AGENTS.md` próprio, leia-o também: ele traz o contexto local daquele módulo e prevalece sobre este arquivo naquele escopo.
+1. Leia [`docs/STATUS.md`](docs/STATUS.md) (estado atual) e [`docs/lessons.md`](docs/lessons.md) (erros a não repetir).
+2. Defina o **nível** do pedido (seção 3) e o **tipo** (seção 4).
+3. Ao tocar código, siga [`.agents/rules/code.md`](.agents/rules/code.md) e [`docs/conventions.md`](docs/conventions.md).
 
-## 3. Roteiro por tipo de pedido
+## 3. Nível do pedido
 
-Todo pedido se encaixa em uma linha abaixo. Siga a skill indicada do início ao fim, **incluindo a seção "Fechamento"**, que diz o que registrar e onde.
+Comece pelo menor nível que faz sentido. **Suba de nível** se aparecer qualquer gatilho abaixo, e avise o usuário quando subir.
 
-| Pedido | Siga | Registro obrigatório | Termina quando |
+| Nível | Exemplos | Como fazer | Pronto quando |
 | --- | --- | --- | --- |
-| Ideia ou funcionalidade nova, ainda sem spec | skills `write-prd` → `write-spec` → `spec-to-tasks` | `docs/product/`, `docs/specs/`, `tasks/` | Tickets aprovados pelo humano |
-| Implementar ticket ou funcionalidade especificada | skill `execute-task` | ticket, sessão, `STATUS.md`, `CHANGELOG.md` | Definition of Done atendida |
-| Corrigir bug | skill `fix-bug` | ticket de bug, sessão, `CHANGELOG.md` | Teste de regressão passando e causa raiz registrada |
-| Revisar código, PR ou branch | skill `review-code` | `docs/reports/reviews/` | Relatório gravado e humano decidiu o que corrigir |
-| Checkup, auditoria, "ver como está" o projeto ou uma área | skill `health-check` | `docs/reports/checkups/` | Relatório gravado e problemas viraram tickets ou débitos |
-| Refatorar ou melhorar código sem mudar comportamento | skill `refactor` | sessão, `STATUS.md` | Comportamento idêntico e testes verdes |
-| Investigar, comparar opções, estudar viabilidade | skill `investigate` | `docs/reports/investigations/` | Recomendação entregue; ADR se houve decisão |
-| Atualizar ou adicionar dependências | skill `update-dependencies` | `CHANGELOG.md`, sessão | Testes verdes após cada lote |
-| Incidente em produção | skill `handle-incident` | `docs/operations/postmortems/` | Serviço estável e postmortem escrito |
-| Registrar uma decisão | skill `record-decision` | `docs/decisions/` | ADR com status definido |
-| Mensagem de commit, descrição de PR, notas de release | skill `prepare-commit` | nenhum (texto na resposta) | Proposta entregue; **o humano commita e abre o PR** |
-| Fazer commit, push, merge ou abrir PR | **não execute** — entregue a proposta com `prepare-commit` | — | Humano executa |
-| Alterar apenas documentação | rule `documentation.md` | o próprio documento | Links e índices consistentes |
-| Encerrar a sessão / salvar progresso | skill `update-progress` | `docs/progress/` | Próximo passo claro no `STATUS.md` |
-| Pergunta ou explicação | responda citando `arquivo:linha` | nenhum | Resposta dada. Se revelou lacuna nos docs, aponte-a |
-| Não se encaixa em nenhuma linha | classifique pela linha mais próxima e confirme com o humano | — | — |
+| **Rápido** (rotina) | Perguntas, explicações, rodar um comando, ajuste de texto/estilo/config, renomear, bug óbvio e localizado, mensagem de commit | Direto, sem skill e sem registro | O afetado foi verificado (teste/lint do trecho) e a resposta diz o que mudou + proposta de commit |
+| **Padrão** | Funcionalidade pequena e clara, bug que exige investigação, refatoração localizada, review, checkup de uma área | Skill do tipo (seção 4) | Testes, lint e build passando; docs afetados atualizados; `STATUS.md` atualizado se o estado mudou; proposta de commit |
+| **Grande** | Funcionalidade com regras de negócio novas, mudança de arquitetura, trabalho de várias sessões, incidente em produção | Skill `plan` antes de executar; depois execução por fatias | Tudo do Padrão + spec com fatias marcadas + decisões registradas + revisão pelo subagente `reviewer` |
 
-**Todo pedido que alterou arquivos** termina com a [Definition of Done](docs/process/definition-of-done.md) e uma resposta final contendo: o que foi feito, o que foi verificado (e como), o que ficou pendente, onde ficou registrado e a **proposta de commits** para o humano executar.
+**Gatilhos que sobem o nível** (Rápido → Padrão, Padrão → Grande):
 
-## 4. Comandos do projeto
+- Muda um contrato público (API, evento, formato de arquivo), dados persistidos ou permissões.
+- Exige escolher entre alternativas reais (vira entrada em `docs/decisions.md`).
+- Atravessa vários módulos ou camadas.
+- O requisito está ambíguo ou contradiz um documento.
+- Há risco para produção, segurança ou dados de usuários.
+
+Se o usuário pedir explicitamente para ir rápido ("só faz", "rapidinho"), respeite, **exceto** diante de risco de segurança ou de dados: nesse caso avise antes de agir.
+
+## 4. Tipo do pedido
+
+| Pedido | Leia e siga |
+| --- | --- |
+| Definir produto, especificar funcionalidade, quebrar em fatias | [`.agents/skills/plan.md`](.agents/skills/plan.md) |
+| Implementar funcionalidade ou fatia; refatorar | [`.agents/skills/build.md`](.agents/skills/build.md) |
+| Corrigir bug; incidente em produção | [`.agents/skills/fix.md`](.agents/skills/fix.md) |
+| Revisar código, branch ou PR | [`.agents/skills/review.md`](.agents/skills/review.md) |
+| Checkup do projeto ou de uma área; dependências; auditoria de docs | [`.agents/skills/checkup.md`](.agents/skills/checkup.md) |
+| Pesquisar, comparar opções, estudar viabilidade | [`.agents/skills/investigate.md`](.agents/skills/investigate.md) |
+| Encerrar trabalho, salvar progresso, mensagem de commit, descrição de PR | [`.agents/skills/wrap-up.md`](.agents/skills/wrap-up.md) |
+| Pergunta ou explicação | Responda citando `arquivo:linha`. Sem skill. |
+
+Cada skill é um único arquivo e diz o que muda em cada nível. No nível Rápido, não é preciso abri-las.
+
+## 5. Comandos do projeto
 
 | Ação | Comando |
 | --- | --- |
-| Instalar dependências | `{{COMANDO}}` |
-| Rodar localmente | `{{COMANDO}}` |
+| Instalar | `{{COMANDO}}` |
+| Rodar | `{{COMANDO}}` |
 | Testes | `{{COMANDO}}` |
 | Lint | `{{COMANDO}}` |
-| Formatação | `{{COMANDO}}` |
+| Formatar | `{{COMANDO}}` |
 | Build | `{{COMANDO}}` |
-| Listar dependências desatualizadas / vulneráveis | `{{COMANDO}}` |
+| Dependências desatualizadas / vulneráveis | `{{COMANDO}}` |
 
-Preparação do ambiente do zero e variáveis de ambiente: [`docs/setup.md`](docs/setup.md).
+Ambiente do zero e variáveis: [`docs/setup.md`](docs/setup.md).
 
-## 5. Hierarquia das fontes de verdade
+## 6. Fontes de verdade
 
-Quando dois documentos discordarem, vale o de cima:
+Em conflito, vale a de cima: `docs/decisions.md` → `docs/product.md` → `docs/architecture.md` → `docs/specs/` → código. Não resolva conflitos sozinho: aponte ao usuário e registre em "Bloqueios" no `STATUS.md`.
 
-1. `docs/decisions/` — decisões registradas (ADRs aceitos)
-2. `docs/product/prd.md` — o que o produto deve fazer
-3. `docs/architecture/contracts.md` e `domain-model.md` — contratos e regras do domínio
-4. `docs/specs/` — como cada etapa será construída
-5. `tasks/` — fatias executáveis das specs
-6. Código existente
+## 7. Regras de ouro
 
-Se encontrar uma divergência, **não escolha sozinho**: aponte-a ao humano e registre em `STATUS.md` na seção de bloqueios.
+- **Nunca faça commit, push, merge, rebase, tag, nem crie ou mescle PR.** Isso é do humano. Você prepara as mensagens (skill `wrap-up`).
+- Não invente requisito. Na dúvida, pergunte.
+- Não declare pronto o que não verificou. Se não conseguiu verificar, diga.
+- Faça a menor mudança que resolve. Melhorias fora do pedido vão para "Débitos e ideias" no `STATUS.md`.
+- Nunca escreva segredos ou dados reais de usuários no repositório.
 
-## 6. Regras de ouro
+## 8. Mapa
 
-- **Você nunca faz commit, push, merge, rebase, tag, nem cria ou mescla pull requests.** Isso é responsabilidade exclusiva do humano. Você prepara as mensagens e descrições (skill `prepare-commit`). Ver [`.agents/rules/git-workflow.md`](.agents/rules/git-workflow.md).
-- Não invente requisito. Se faltar informação, pergunte.
-- Mudança de comportamento sem teste não está pronta.
-- Toda decisão não trivial vira um ADR (skill `record-decision`).
-- Nunca escreva segredos, credenciais ou dados reais de usuários em arquivos do repositório.
-- Siga [`docs/architecture/conventions.md`](docs/architecture/conventions.md). Se um padrão precisar mudar, mude o documento junto com o código, nunca só o código.
-- Nada que você verificou ou decidiu fica só no chat: vai para o registro indicado na seção 3.
-
-## 7. Mapa do repositório
-
-| Caminho | Para que serve |
+| Caminho | Conteúdo |
 | --- | --- |
-| `.agents/rules/` | Regras persistentes de comportamento e padrão de código |
-| `.agents/skills/` | Roteiros de cada tipo de atividade, carregados sob demanda |
-| `.agents/agents/` | Subagentes especializados (planejador, revisor, auditor de docs) |
-| `.agents/commands/` | Atalhos que o humano dispara (`/start-session`, `/new-feature`...) |
-| `.agents/hooks/` | Scripts executados automaticamente em eventos do agente |
-| `.agents/mcp/` | Servidores MCP (ferramentas externas) usados pelo projeto |
-| `.agents/templates/` | Modelos: `AGENTS.md` de módulo e descrição de pull request |
-| `docs/setup.md` | Como preparar o ambiente e o que é cada variável de ambiente |
-| `docs/product/` | PRD, user stories e registro de decisões de produto |
-| `docs/architecture/` | Visão geral, modelo de domínio, contratos e convenções de código |
-| `docs/decisions/` | ADRs — por que cada decisão foi tomada |
-| `docs/specs/` | Especificações de cada etapa de entrega |
-| `docs/process/` | Definition of Ready e Definition of Done |
-| `docs/reports/` | Relatórios de reviews, checkups e investigações |
-| `docs/operations/` | Runbook e postmortems |
-| `docs/progress/` | Estado atual, diário de sessões e lições aprendidas |
-| `docs/glossary.md` | Linguagem do domínio |
-| `tasks/` | Tickets (funcionalidades e bugs) com dependências |
-| `CHANGELOG.md` | O que mudou em cada versão |
+| `.agents/rules/` | `core.md` (sempre) e `code.md` (ao tocar código) |
+| `.agents/skills/` | Roteiros, um arquivo por skill: `plan.md`, `build.md`, `fix.md`, `review.md`, `checkup.md`, `investigate.md`, `wrap-up.md` |
+| `.agents/agents/` | Subagentes: `reviewer`, `auditor` |
+| `.agents/hooks/` | Scripts automáticos: proteção, formatação, estado no início da sessão |
+| `docs/STATUS.md` | Estado atual: agora, próximo, bloqueios, débitos |
+| `docs/product.md` | O quê e por quê: requisitos, histórias, glossário |
+| `docs/architecture.md` | Como: componentes, domínio, contratos |
+| `docs/conventions.md` | Padrões de código escolhidos para este projeto |
+| `docs/decisions.md` | Decisões e seus porquês |
+| `docs/specs/` | Specs de trabalhos de nível Grande, com fatias |
+| `docs/setup.md` / `docs/operations.md` | Ambiente local / produção e incidentes |
+| `docs/lessons.md` | Lições aprendidas |
+| `docs/reports/` | Relatórios de review, checkup e investigação de nível Grande |
+| `CHANGELOG.md` | Mudanças visíveis por versão |

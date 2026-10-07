@@ -1,54 +1,36 @@
-# Setup do ambiente
+# Setup
 
-Como sair de uma máquina vazia até o projeto rodando e testado. Se algum passo falhar, corrija este documento junto com a solução.
+Da máquina vazia ao projeto rodando. Se um passo falhar, corrija este documento junto com a solução.
 
-## 1. Pré-requisitos
+## Pré-requisitos
 
-| Ferramenta | Versão | Para quê | Como verificar |
-| --- | --- | --- | --- |
-| {{ferramenta}} | {{versão}} | {{}} | `{{comando --version}}` |
+| Ferramenta | Versão | Verificar com |
+| --- | --- | --- |
+| {{}} | {{}} | `{{comando --version}}` |
 
-## 2. Primeira execução
+## Primeira execução
 
 ```sh
-# 1. Clonar
-git clone {{url}}
-cd {{pasta}}
-
-# 2. Variáveis de ambiente
-cp .env.example .env    # depois preencha os valores (seção 3)
-
-# 3. Dependências
-{{comando}}
-
-# 4. Serviços auxiliares (banco, filas, etc.), se houver
-{{comando}}
-
-# 5. Rodar
-{{comando}}
-
-# 6. Testar
-{{comando}}
+git clone {{url}} && cd {{pasta}}
+cp .env.example .env        # preencha os valores (tabela abaixo)
+{{instalar dependências}}
+{{subir serviços auxiliares, se houver}}
+{{rodar}}
+{{testar}}
 ```
 
-**Resultado esperado:** {{como saber que funcionou — URL, saída no terminal, etc.}}
+**Funcionou se:** {{URL, saída esperada}}
 
-## 3. Variáveis de ambiente
+## Variáveis de ambiente
 
-Toda variável usada pelo projeto está aqui e em `.env.example` (sem valores reais).
+Toda variável está aqui e em `.env.example` (sem valores reais).
 
-| Variável | Obrigatória | Descrição | Exemplo / formato | Onde obter |
-| --- | --- | --- | --- | --- |
-| `{{NOME}}` | sim / não | {{}} | {{}} | {{}} |
-
-## 4. Serviços externos
-
-| Serviço | Para quê | Ambiente local | Credenciais |
+| Variável | Obrigatória | Para quê | Onde obter |
 | --- | --- | --- | --- |
-| | | {{real / emulado / mock}} | {{variável}} |
+| | | | |
 
-## 5. Problemas comuns
+## Problemas comuns
 
-| Sintoma | Causa | Solução |
-| --- | --- | --- |
-| | | |
+| Sintoma | Solução |
+| --- | --- |
+| | |

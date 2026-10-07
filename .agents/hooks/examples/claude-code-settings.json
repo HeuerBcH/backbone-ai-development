@@ -9,15 +9,9 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": "Bash|Edit|Write|MultiEdit",
         "hooks": [
-          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.agents/hooks/guard-command.sh\"" }
-        ]
-      },
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.agents/hooks/guard-files.sh\"" }
+          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.agents/hooks/guard.sh\"" }
         ]
       }
     ],
@@ -26,13 +20,6 @@
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.agents/hooks/post-edit.sh\"" }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.agents/hooks/check-progress.sh\"" }
         ]
       }
     ]

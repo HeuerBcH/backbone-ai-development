@@ -1,17 +1,5 @@
 # Relatórios
 
-Resultado de toda verificação feita no projeto. Nada que foi verificado fica só no chat: o relatório é a prova do que foi analisado, quando, por quem e com qual conclusão.
+Resultados de reviews, checkups e investigações que precisam ficar registrados: os de nível Grande, os checkups gerais, ou quando o usuário pede. Os demais ficam só na resposta.
 
-| Pasta | Gerado pela skill | Conteúdo |
-| --- | --- | --- |
-| `reviews/` | `review-code` | Revisões de mudanças: achados, severidade, veredito |
-| `checkups/` | `health-check` | Saúde do projeto ou de uma área, por dimensão |
-| `investigations/` | `investigate` | Perguntas técnicas, alternativas comparadas, recomendação |
-
-Nome dos arquivos: `AAAA-MM-DD-escopo-curto.md`. Cada pasta tem um `_template.md`.
-
-## Índice
-
-| Data | Tipo | Relatório | Conclusão |
-| --- | --- | --- | --- |
-| | | | |
+Nome: `AAAA-MM-DD-tipo-assunto.md` (ex.: `2026-10-06-checkup.md`). O formato de cada tipo está na skill correspondente (`review`, `checkup`, `investigate`). Todo relatório diz o que foi verificado, com evidência, e o que **não** foi.
